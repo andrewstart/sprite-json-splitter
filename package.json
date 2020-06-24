@@ -1,0 +1,17 @@
+{
+  "name": "sprite-json-splitter",
+  "version": "1.0.0",
+  "description": "splits sprite sheet into separate images based on json schema",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dmitrosh/sprite-json-splitter"
+  },
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "jimp": "^0.13.0",
+    "yargs": "^15.3.1"
+  },
+  "license": "MIT"
+}
