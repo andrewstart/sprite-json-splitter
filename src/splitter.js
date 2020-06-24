@@ -1,16 +1,20 @@
-const jimp = require('jimp');
+const Jimp = require('jimp');
 const path = require('path');
 
 exports.execute = async function splitter(image, destination, quality, frames) {
-    const sprite = await jimp.read(image);
+    const sprite = await Jimp.read(image);
 
-    for (let [filename, {frame: {x, y, w, h}, spriteSourceSize: {x: sX, y: sY}}] of Object.entries(frames)) {
+    for (let [key, data] of Object.entries(frames)) {
+        const {x, y, w, h} = data.frame;
+        const filename = path.join(destination, key);
         const newImage = sprite.clone().crop(x, y, w, h).quality(quality);
 
-        if (sX || sY) {
-            newImage.contain(sX + w, sY + h, jimp.HORIZONTAL_ALIGN_RIGHT | jimp.VERTICAL_ALIGN_BOTTOM);
-        }
+        if (!data.trimmed) {
+            newImage.write(filename);
+        } else {
+            const canvas = new Jimp(data.sourceSize.w, data.sourceSize.h);
 
-        newImage.write(path.join(destination, filename));
+            canvas.blit(newImage, data.spriteSourceSize.x, data.spriteSourceSize.y).write(filename);
+        }
     }
 };
