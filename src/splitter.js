@@ -6,7 +6,8 @@ exports.execute = async function splitter(image, destination, quality, frames) {
 
     for (let [key, data] of Object.entries(frames)) {
         const {x, y, w, h} = data.frame;
-        const filename = path.join(destination, key);
+        let filename = path.join(destination, key);
+        if (!filename.endsWith('.png')) filename += '.png';
         const newImage = sprite.clone().crop(x, y, w, h).quality(quality);
 
         if (!data.trimmed) {
